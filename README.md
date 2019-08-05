@@ -14,6 +14,6 @@ Batch processing with job dependencies on NCI, using Python 2.7.
 
 ## Command Line Examples
 ```
-jobBatch.py -num 24 -flash "flash4"
+jobBatch.py -nJobs 24 -nCores 4096 -flash "flash4"
 ```
-creates 24 jobs using the compiled flash file `flash4`. After the first job, the `prep_restart.py` script will be run inbetween jobs.
+creates 24 jobs, each requesting 4096 compute cores, using the compiled FLASH executable `flash4`. After the first job, the `prep_restart.py` script as run inbetween jobs.
