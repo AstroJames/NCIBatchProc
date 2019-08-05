@@ -1,4 +1,4 @@
-# NCIBatchProc
+# NCI Dependent Batch Processing
 Batch processing with job dependencies on NCI, using Python 2.7. 
 - `jobBatch.py` will create a batch of `n` jobs, where the `n+1`th job depends upon the execution of the `n`th job. 
 
@@ -16,4 +16,4 @@ Batch processing with job dependencies on NCI, using Python 2.7.
 ```
 jobBatch.py -num 24 -flash "flash4"
 ```
-
+creates 24 jobs using the compiled flash file `flash4`. After the first job, the `prep_restart.py` script will be run inbetween jobs.
