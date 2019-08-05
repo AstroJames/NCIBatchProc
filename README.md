@@ -5,10 +5,10 @@ Batch processing with job dependencies on NCI, using Python 2.7.
 ## Dependencies
 - `subprocess` module
 - `argparse` module
-- `prep_restart.py` executable in `$USER/bin` (ask Christoph for this script)
+- `prep_restart.py` executable (`chmod +x prep_restart.py`) in `$USER/bin` (ask Christoph for this script)
 
 ## Useage
-- Make `jobBatch.py` an executable in `$USER/bin`,  as well as `prep_restart.py`.
+- Make `jobBatch.py` an executable (`chmod +x jobBatch.py`) in `$USER/bin`,  as well as `prep_restart.py`.
 - Update the `makeJobFile()` function in `jobBatch.py` to match the job file that you want to batch process.
 - Use the command line to run `jobBatch.py` in the directory with your FLASH simulation.
 
