@@ -16,8 +16,8 @@ import argparse
 
 ap		= argparse.ArgumentParser(description = 'Input arguments')
 ap.add_argument('-nJobs',required=True,default=None,help='the number of files to write',type=int)
+ap.add_argument('-nCores',required=True,default=None,help='the number of cores requested for each job',type=int)
 ap.add_argument('-flash',required=True,default=None,help='the compiled flash file',type=str)
-ap.add_argument('-nCores',required=True,default=None,help='the compiled flash file',type=str)
 args	= vars(ap.parse_args())
 
 # Command line examples
