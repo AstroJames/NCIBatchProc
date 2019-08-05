@@ -25,7 +25,7 @@ args	= vars(ap.parse_args())
 """
 jobBatch.py -nJobs 24 -nCores 4096 -flash "flash4"
 
-for running 24 jobs, using 4069 compute cors and using the compiled FLASH executable 'flash4'
+for running 24 jobs, using 4096 compute cores and using the compiled FLASH executable 'flash4'
 
 """
 
