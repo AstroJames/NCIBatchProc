@@ -15,14 +15,24 @@ import argparse
 ##########################################################################################################
 
 ap		= argparse.ArgumentParser(description = 'Input arguments')
-ap.add_argument('-num',required=True,default=None,help='the number of files to write',type=int)
+ap.add_argument('-nJobs',required=True,default=None,help='the number of files to write',type=int)
 ap.add_argument('-flash',required=True,default=None,help='the compiled flash file',type=str)
+ap.add_argument('-nCores',required=True,default=None,help='the compiled flash file',type=str)
 args	= vars(ap.parse_args())
+
+# Command line examples
+##########################################################################################################
+"""
+jobBatch.py -nJobs 24 -nCores 4096 -flash "flash4"
+
+for running 24 jobs, using 4069 compute cors and using the compiled FLASH executable 'flash4'
+
+"""
 
 # Function definitions
 ##########################################################################################################
 
-def makeJobFile(jobFileNum,flashFile,jobDepend=None):
+def makeJobFile(jobFileNum,nCores,flashFile,jobDepend=None):
     """
     Create a new job file
 
@@ -38,7 +48,6 @@ def makeJobFile(jobFileNum,flashFile,jobDepend=None):
     """
 
     jobFile = "job{}.sh".format(jobFileNum)
-    nCore   = 4096
     print("\n--------------------------------------------------------")
     print("Building Job File.")
     print("--------------------------------------------------------\n")
@@ -50,8 +59,8 @@ def makeJobFile(jobFileNum,flashFile,jobDepend=None):
     job.write("#PBS -P ek9 \n")
     job.write("#PBS -q normal \n")
     job.write("#PBS -l walltime=04:00:00 \n")
-    job.write("#PBS -l ncpus={} \n".format(nCore))
-    job.write("#PBS -l mem={}".format(nCore*2) +"GB \n")
+    job.write("#PBS -l ncpus={} \n".format(nCores))
+    job.write("#PBS -l mem={}".format(nCores*2) +"GB \n")
     job.write("#PBS -l wd \n")
     job.write("#PBS -N job{} \n".format(jobFileNum))
     job.write("#PBS -j oe \n")
@@ -65,7 +74,7 @@ def makeJobFile(jobFileNum,flashFile,jobDepend=None):
     job.write("mpirun -np $PBS_NCPUS ./{} 1>shell.out0{} 2>&1".format(flashFile,jobFileNum))
     job.close()
 
-def submitJobFiles(numOfFiles,flashFile):
+def submitJobFiles(numOfFiles,nCores,flashFile):
     """
     Write and submit job files.
 
@@ -96,7 +105,7 @@ def submitJobFiles(numOfFiles,flashFile):
 
     for jobFileNum in xrange(1,numOfFiles + 1):
 
-        makeJobFile(jobFileNum,flashFile,jobDependacy)
+        makeJobFile(jobFileNum,nCores,flashFile,jobDependacy)
         print("Submitting job file: job{}.sh".format(jobFileNum))
         proc            = subprocess.Popen(["qsub job{}.sh".format(jobFileNum)], stdout=subprocess.PIPE, shell=True)
         (out, err)      = proc.communicate()
@@ -110,4 +119,4 @@ def submitJobFiles(numOfFiles,flashFile):
 # Working Script
 #######################################################################################################
 
-submitJobFiles(args['num'],args['flash'])
+submitJobFiles(args['nJobs'],args['nCores'],args['flash'])
