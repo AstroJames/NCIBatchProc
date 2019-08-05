@@ -70,7 +70,7 @@ def makeJobFile(jobFileNum,nCores,flashFile,jobDepend=None):
     job.write("#PBS -M beattijr@mso.anu.edu.au \n \n")
     if jobDepend is not None:
         print("Writing a prep_restart.py in job file: job{}.sh".format(jobFileNum))
-        job.write("prep_restart.py -auto 1>shell_res.out{} 2>&1".format(jobFileNum))
+        job.write("prep_restart.py -auto 1>shell_res.out{} 2>&1 \n".format(jobFileNum))
     job.write("mpirun -np $PBS_NCPUS ./{} 1>shell.out0{} 2>&1".format(flashFile,jobFileNum))
     job.close()
 
