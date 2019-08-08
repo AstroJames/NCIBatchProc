@@ -32,7 +32,7 @@ for running 24 jobs, using 4096 compute cores and using the compiled FLASH execu
 # Function definitions
 ##########################################################################################################
 
-def makeJobFile(jobFileNum,nCores,flashFile,jobDepend=None):
+def makeJobFile(jobFileNum,nCores,flashFile,email,jobDepend=None):
     """
     Create a new job file
 
@@ -49,7 +49,7 @@ def makeJobFile(jobFileNum,nCores,flashFile,jobDepend=None):
 
     jobFile = "job{}.sh".format(jobFileNum)
     print("\n--------------------------------------------------------")
-    print("Building Job File.")
+    print("Building Job File {}.".format(jobFileNum))
     print("--------------------------------------------------------\n")
 
     system("touch " + jobFile)
@@ -66,8 +66,8 @@ def makeJobFile(jobFileNum,nCores,flashFile,jobDepend=None):
     job.write("#PBS -j oe \n")
     job.write("#PBS -m bea \n")
     if jobDepend is not None:
-        job.write("#PBS -W depend=after:{} \n".format(jobDepend))
-    job.write("#PBS -M beattijr@mso.anu.edu.au \n \n")
+        job.write("#PBS -W depend=afterany:{} \n".format(jobDepend))
+    job.write("#PBS -M {} \n \n".format(email))
     if jobDepend is not None:
         print("Writing a prep_restart.py in job file: job{}.sh".format(jobFileNum))
         job.write("prep_restart.py -auto 1>shell_res.out{} 2>&1 \n".format(jobFileNum))
@@ -93,7 +93,9 @@ def submitJobFiles(numOfFiles,nCores,flashFile):
     print("--------------------------------------------------------\n")
 
     jobDependacy = None
-
+    
+    
+    email = raw_input("What email do you want to send job updates to: \n")
     print("You are about to submit {}".format(numOfFiles) + " files.")
     print("You are using the flash file: {}".format(flashFile))
     print("This will be {}".format(numOfFiles*4) + " walltime hours in total.")
@@ -102,10 +104,10 @@ def submitJobFiles(numOfFiles,nCores,flashFile):
         cont = raw_input("Please only input (y/n).")
     if cont == "n":
         return
-
+    
+    # Loop through jobs.
     for jobFileNum in xrange(1,numOfFiles + 1):
-
-        makeJobFile(jobFileNum,nCores,flashFile,jobDependacy)
+        makeJobFile(jobFileNum,nCores,flashFile,email,jobDependacy)
         print("Submitting job file: job{}.sh".format(jobFileNum))
         proc            = subprocess.Popen(["qsub job{}.sh".format(jobFileNum)], stdout=subprocess.PIPE, shell=True)
         (out, err)      = proc.communicate()
