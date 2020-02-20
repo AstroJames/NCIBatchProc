@@ -65,13 +65,14 @@ def makeJobFile(jobFileNum,nCores,flashFile,email,jobDepend=None):
     job.write("#PBS -N job{} \n".format(jobFileNum))
     job.write("#PBS -j oe \n")
     job.write("#PBS -m bea \n")
+    job.write("#PBS -l storage=scratch/ek9+gdata/ek9")
     if jobDepend is not None:
         job.write("#PBS -W depend=afterany:{} \n".format(jobDepend))
     job.write("#PBS -M {} \n \n".format(email))
     if jobDepend is not None:
         print("Writing a prep_restart.py in job file: job{}.sh".format(jobFileNum))
         job.write("prep_restart.py -auto 1>shell_res.out{} 2>&1 \n".format(jobFileNum))
-    job.write("mpirun -np $PBS_NCPUS ./{} 1>shell.out0{} 2>&1".format(flashFile,jobFileNum))
+    job.write("mpirun -np $PBS_NCPUS -x UCX_TLS=rc ./{} 1>shell.out0{} 2>&1".format(flashFile,jobFileNum))
     job.close()
 
 def submitJobFiles(numOfFiles,nCores,flashFile):
