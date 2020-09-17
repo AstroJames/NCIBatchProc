@@ -119,7 +119,7 @@ def submitJobFiles(numOfFiles,nCores,flashFile):
             break
         print("Job file number : {}".format(jobDependacy))
 
-# Working Script
+# Main
 #######################################################################################################
-
-submitJobFiles(args['nJobs'],args['nCores'],args['flash'])
+if __name__ == "__main__":
+    submitJobFiles(args['nJobs'],args['nCores'],args['flash'])
