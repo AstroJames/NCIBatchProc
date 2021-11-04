@@ -166,6 +166,8 @@ if __name__ == "__main__":
     ap.add_argument('-email','-e',dest='email',default=None,help='the email ID to send updates to.',type=int)
     ap.add_argument('-queue','-q',dest='jobQueue',default='normal',help='the queue to submit to',type=str)
     ap.add_argument('-flash',dest='flashExec',default='flash4',help='the compiled flash file',type=str)
+    ap.add_argument("-submit", "--submit", dest='submit',action='store_true', 
+        help="Submit script after creating.")
     ap.add_argument("-verbose", "--verbose", dest='verbose',action='store_true', 
         help="More printing messages for debugging.")
     args = ap.parse_args()
@@ -173,7 +175,8 @@ if __name__ == "__main__":
     jobFile,jobCharge = makeJobFile(jobFile=args.jobFile,nCpu=args.nCpu,jobName=args.jobName,
         wallTime=args.wallTime,jobMemory=args.jobMemory,jobQueue=args.jobQueue,flashExec=args.flashExec,
         email=args.email,verbose=args.verbose)
-    jobID = submitJob(args.jobFile,args.verbose)
+    if(args.submit):
+        jobID = submitJob(args.jobFile,args.verbose)
     
     #Final Print
 
