@@ -122,8 +122,6 @@ def makeJobFile(jobFile='job.sh',nCpu=48,jobName='FlashSim',wallTime=1,jobMemory
         except KeyError:
             email = None
 
-
-    jobFile = "job.sh"
     os.system("touch {}".format(jobFile))
     job = open(jobFile,"w")
     if(verbose):
