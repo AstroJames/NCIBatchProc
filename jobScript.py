@@ -32,7 +32,7 @@ def check_Limits(wallTime=1,nCpu=48,jobMemory=None,jobQueue='normal',verbose=Fal
             wallTimeLimit = 24
         elif(nCpu>1440 and nCpu<=2976):
             wallTimeLimit = 10
-        if(nCpu>20736):
+        elif(nCpu>20736):
             raise ValueError("nCPUS requested greater than normal max request.")
         else:
             wallTimeLimit = 5
