@@ -181,8 +181,6 @@ if __name__ == "__main__":
     #Final Print
 
     jobChargeVal, jobChargeUnit = getjobChargeUnit(jobCharge)
-    print("JobID: {}".format(jobID))
     print("Expected Cost: {} {}".format(jobChargeVal,jobChargeUnit))
-
-    if(args.verbose):
-        os.system("qcat -s {}".format(jobID))
+    if(args.submit):
+        print("JobID: {}".format(jobID))
